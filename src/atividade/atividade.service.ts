@@ -1,5 +1,5 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { CreateUserDTO } from "./dto/create-user.dto";
+import { Injectable, ConflictException } from "@nestjs/common";
+
 import { PrismaService } from "src/prisma/prisma.service";
 
 
@@ -7,31 +7,47 @@ import { PrismaService } from "src/prisma/prisma.service";
 export class AtividadeService {
 
 
-    constructor(private prisma: PrismaService){}
+    constructor(private prisma: PrismaService) { }
 
-    async exists(id:string){
-        if(!(await this.show(id))){
-            throw new NotFoundException('Usuário não encontrado')
+
+    async create(nome: string) {
+        try {
+            return await this.prisma.atividade.create({
+                data: { nome },
+            });
+        } catch (error) {
+            if (error.code === 'P2002') {
+
+                throw new ConflictException(`Já existe uma atividade com o nome "${nome}".`);
+            }
+            throw error;
         }
     }
 
-    async create({name,email,password}:CreateUserDTO){
-        return this.prisma.usuario.create({
-            data:{
-                nome:name,
-                email:email,
-                senha:password,
+    async list() {
+        return this.prisma.atividade.findMany()
+    }
+
+    async update(id: string, nome: string) {
+
+        try {
+            return await this.prisma.atividade.update({
+                where: { id },
+                data: { nome }
+            });
+        } catch (error) {
+            if (error.code === 'P2002') {
+
+                throw new ConflictException(`Já existe uma atividade com o nome "${nome}".`);
             }
-        })
+            throw error;
+        }
     }
 
-    async list(){
-        return this.prisma.usuario.findMany()
-    }
+    async delete(id: string) {
 
-    async show(id:string){
-        return this.prisma.usuario.findUnique({
-            where:{
+        return this.prisma.atividade.delete({
+            where: {
                 id
             }
         })

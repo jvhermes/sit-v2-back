@@ -10,4 +10,4 @@ import { PrismaModule } from "src/prisma/prisma.module";
     exports:[AtividadeService]
 })
 
-export class UserModule{}
+export class AtividadeModule{}
