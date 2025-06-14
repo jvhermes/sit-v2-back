@@ -1,36 +1,53 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, ConflictException } from "@nestjs/common";
+
 import { PrismaService } from "src/prisma/prisma.service";
 
 
 @Injectable()
-export class AtividadeService {
+export class CartorioService {
 
 
-    constructor(private prisma: PrismaService){}
+    constructor(private prisma: PrismaService) { }
 
-    async exists(id:string){
-        if(!(await this.show(id))){
-            throw new NotFoundException('Usuário não encontrado')
+
+    async create(nome: string) {
+        try {
+            return await this.prisma.cartorio.create({
+                data: { nome },
+            });
+        } catch (error) {
+            if (error.code === 'P2002') {
+
+                throw new ConflictException(`Já existe uma atividade com o nome "${nome}".`);
+            }
+            throw error;
         }
     }
 
-    async create({name,email,password}/*:CreateUserDTO*/){
-        return this.prisma.cartorio.create({
-            data:{
-                nome:name,
-                email:email,
-                senha:password,
-            }
-        })
-    }
-
-    async list(){
+    async list() {
         return this.prisma.cartorio.findMany()
     }
 
-    async show(id:string){
-        return this.prisma.cartorio.findUnique({
-            where:{
+    async update(id: string, nome: string) {
+
+        try {
+            return await this.prisma.cartorio.update({
+                where: { id },
+                data: { nome }
+            });
+        } catch (error) {
+            if (error.code === 'P2002') {
+
+                throw new ConflictException(`Já existe uma atividade com o nome "${nome}".`);
+            }
+            throw error;
+        }
+    }
+
+    async delete(id: string) {
+
+        return this.prisma.cartorio.delete({
+            where: {
                 id
             }
         })

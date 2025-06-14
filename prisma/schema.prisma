@@ -107,13 +107,15 @@ model Setor {
   @@map("setores")
 }
 
-model TipoDeProcesso {
-  id   Int    @id @default(autoincrement())
-  nome String @unique
-  tipo Tipo
+model Tipo {
+  id   Int            @id @default(autoincrement())
+  nome String         @unique
+  tipo TipoEnum
 
   processo_prefeitura ProcessoPrefeitura[]
   processo_cartorio   ProcessoCartorio[]
+
+  @@map("tipo")
 }
 
 model ProcessoPrefeitura {
@@ -129,10 +131,10 @@ model ProcessoPrefeitura {
   criado_em     DateTime  @default(now())
   texto         String    @default("")
 
-  cartorio  Cartorio       @relation(fields: [destino_id], references: [id])
-  atividade Atividade      @relation(fields: [atividade_id], references: [id])
-  tipo      TipoDeProcesso @relation(fields: [tipo_id], references: [id])
-  setor     Setor          @relation(fields: [fonte_id], references: [id])
+  cartorio  Cartorio  @relation(fields: [destino_id], references: [id])
+  atividade Atividade @relation(fields: [atividade_id], references: [id])
+  tipo      Tipo      @relation(fields: [tipo_id], references: [id])
+  setor     Setor     @relation(fields: [fonte_id], references: [id])
 
   descricao_lotes   DescricaoLotes[]
   descricao_pessoas DescricaoPessoas[]
@@ -158,10 +160,10 @@ model ProcessoCartorio {
   ano           String
   doc_id        String    @default("")
 
-  setor     Setor          @relation(fields: [destino_id], references: [id])
-  cartorio  Cartorio       @relation(fields: [fonte_id], references: [id])
-  atividade Atividade      @relation(fields: [atividade_id], references: [id])
-  tipo      TipoDeProcesso @relation(fields: [tipo_id], references: [id])
+  setor     Setor     @relation(fields: [destino_id], references: [id])
+  cartorio  Cartorio  @relation(fields: [fonte_id], references: [id])
+  atividade Atividade @relation(fields: [atividade_id], references: [id])
+  tipo      Tipo      @relation(fields: [tipo_id], references: [id])
 
   descricao_pessoas DescricaoPessoas[]
   descricao_lotes   DescricaoLotes[]
@@ -264,7 +266,7 @@ enum Perfil {
   CARTORIO
 }
 
-enum Tipo {
+enum TipoEnum {
   DESMEMBRAMENTO
   REMEMBRAMENTO
   OUTRO

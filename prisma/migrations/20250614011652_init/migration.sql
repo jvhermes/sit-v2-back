@@ -2,7 +2,7 @@
 CREATE TYPE "Perfil" AS ENUM ('ADMIN', 'PREFEITURA', 'CARTORIO');
 
 -- CreateEnum
-CREATE TYPE "Tipo" AS ENUM ('DESMEMBRAMENTO', 'REMEMBRAMENTO', 'OUTRO');
+CREATE TYPE "TipoEnum" AS ENUM ('DESMEMBRAMENTO', 'REMEMBRAMENTO', 'OUTRO');
 
 -- CreateEnum
 CREATE TYPE "Status" AS ENUM ('RESPONDIDO', 'ATRASADO', 'PENDENTE', 'RESPONDIDO_COM_ATRASO');
@@ -91,12 +91,12 @@ CREATE TABLE "setores" (
 );
 
 -- CreateTable
-CREATE TABLE "TipoDeProcesso" (
+CREATE TABLE "tipo" (
     "id" SERIAL NOT NULL,
     "nome" TEXT NOT NULL,
-    "tipo" "Tipo" NOT NULL,
+    "tipo" "TipoEnum" NOT NULL,
 
-    CONSTRAINT "TipoDeProcesso_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "tipo_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -214,6 +214,18 @@ CREATE UNIQUE INDEX "usuarios_email_key" ON "usuarios"("email");
 CREATE UNIQUE INDEX "lotes_codigo_imovel_key" ON "lotes"("codigo_imovel");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "atividades_nome_key" ON "atividades"("nome");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "departamentos_nome_key" ON "departamentos"("nome");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "setores_nome_key" ON "setores"("nome");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "tipo_nome_key" ON "tipo"("nome");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "processos-p_num_processo_key" ON "processos-p"("num_processo");
 
 -- CreateIndex
@@ -250,7 +262,7 @@ ALTER TABLE "processos-p" ADD CONSTRAINT "processos-p_destino_id_fkey" FOREIGN K
 ALTER TABLE "processos-p" ADD CONSTRAINT "processos-p_atividade_id_fkey" FOREIGN KEY ("atividade_id") REFERENCES "atividades"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "processos-p" ADD CONSTRAINT "processos-p_tipo_id_fkey" FOREIGN KEY ("tipo_id") REFERENCES "TipoDeProcesso"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "processos-p" ADD CONSTRAINT "processos-p_tipo_id_fkey" FOREIGN KEY ("tipo_id") REFERENCES "tipo"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "processos-p" ADD CONSTRAINT "processos-p_fonte_id_fkey" FOREIGN KEY ("fonte_id") REFERENCES "setores"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -265,7 +277,7 @@ ALTER TABLE "processo-c" ADD CONSTRAINT "processo-c_fonte_id_fkey" FOREIGN KEY (
 ALTER TABLE "processo-c" ADD CONSTRAINT "processo-c_atividade_id_fkey" FOREIGN KEY ("atividade_id") REFERENCES "atividades"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "processo-c" ADD CONSTRAINT "processo-c_tipo_id_fkey" FOREIGN KEY ("tipo_id") REFERENCES "TipoDeProcesso"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "processo-c" ADD CONSTRAINT "processo-c_tipo_id_fkey" FOREIGN KEY ("tipo_id") REFERENCES "tipo"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "reenvio" ADD CONSTRAINT "reenvio_processo_id_fkey" FOREIGN KEY ("processo_id") REFERENCES "processos-p"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
