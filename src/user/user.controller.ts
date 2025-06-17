@@ -20,12 +20,12 @@ export class UserController{
     }
 
     @Get(':id')
-    async readOne(@Param('id',ParseIntPipe) id:number){
-        return{id}
+    async readOne(@Param('id') id:string){
+        return this.userService.readOne(id)
     }
 
     @Put(':id')
-    async update(@Body() body:UpdateUserDTO,@Param('id',ParseIntPipe) id:number){
+    async update(@Body() body:UpdateUserDTO,@Param('id') id:number){
         return{
             method:'put',
             body,
@@ -33,17 +33,9 @@ export class UserController{
         }
     }
 
-    @Patch(':id')
-    async updateUnic(@Body() body : PatchUserDTO,@Param('id',ParseIntPipe) id:number){
-        return{
-            method:'patch',
-            body,
-            id,
-        }
-    }
 
     @Delete(':id')
-    async deleteUnic(@Param('id',ParseIntPipe) id:number){
+    async deleteUnic(@Param('id') id:number){
         return{
            id
         }

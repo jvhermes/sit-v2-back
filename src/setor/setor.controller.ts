@@ -18,7 +18,7 @@ export class SetorController{
     }
 
     @Put(':id')
-    async update(@Body() nome:string, @Param() id:string ){
+    async update(@Body() nome:string, @Param("id") id:string ){
         return this.setorService.update(nome,id)
     }
 }

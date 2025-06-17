@@ -30,6 +30,14 @@ export class UserService {
         return this.prisma.usuario.findMany()
     }
 
+    async readOne(id:string){
+        return this.prisma.usuario.findUnique({
+            where:{
+                id
+            }
+        })
+    }
+
     async show(id:string){
         return this.prisma.usuario.findUnique({
             where:{

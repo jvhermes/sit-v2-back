@@ -18,7 +18,7 @@ export class AtividadeController{
     }
 
     @Put(':id')
-    async update(@Body() nome:string, @Param() id:string ){
+    async update(@Body() nome:string, @Param("id") id:string ){
         return this.atividadeService.update(nome,id)
     }
 }

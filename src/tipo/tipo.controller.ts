@@ -18,7 +18,7 @@ export class TipoController{
     }
 
     @Put(':id')
-    async update(@Body() nome:string, @Param() id:number ){
+    async update(@Body("nome") nome:string, @Param("id") id:number ){
         return this.tipoService.update(id, nome)
     }
 }
