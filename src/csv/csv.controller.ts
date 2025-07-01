@@ -1,20 +1,34 @@
-import { Controller, Get,Post,Put,Delete,Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, UploadedFile, UseInterceptors, } from '@nestjs/common';
 import { CsvService } from './csv.service';
-import { Lote } from '@prisma/client';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
+import * as csv from 'csv-parser';
+
 
 
 @Controller('csv')
-export class CsvController{
+export class CsvController {
 
-    constructor(private readonly csvService:CsvService){}
+    constructor(private readonly csvService: CsvService) { }
 
     @Post()
-    async create(@Body() nome:Lote){
-        return this.csvService.create(nome)
+    @UseInterceptors(
+        FileInterceptor('file', {
+            storage: memoryStorage(), // NÃO salva no disco
+            fileFilter: (req, file, cb) => {
+                if (file.mimetype === 'text/csv') cb(null, true);
+                else cb(new Error('Apenas arquivos CSV são permitidos'), false);
+            },
+        }),
+    )
+    async create(@UploadedFile() file: Express.Multer.File) {
+        const rows = await this.csvService.parseCsv(file.buffer);
+        const result = await this.csvService.create(rows);
+        return { inserted: result.count };
     }
 
     @Get()
-    async list(){
+    async list() {
         return this.csvService.list()
     }
 
