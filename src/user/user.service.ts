@@ -15,13 +15,13 @@ export class UserService {
         }
     }
 
-    async create({name,email,password}:CreateUserDTO){
+    async create({name,email,password,perfil}:CreateUserDTO){
         return this.prisma.usuario.create({
             data:{
                 nome:name,
                 email:email,
                 senha:password,
-                perfil:"ADMIN"
+                perfil:perfil
             }
         })
     }

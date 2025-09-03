@@ -1,4 +1,8 @@
-import { IsString,IsEmail,IsStrongPassword } from "class-validator";
+import { IsString,IsEmail,IsStrongPassword,IsEnum } from "class-validator";
+
+enum Perfil {ADMIN = "ADMIN",
+  PREFEITURA = "PREFEITURA",
+  CARTORIO = "CARTORIO"}
 
 export class CreateUserDTO{
     @IsString()
@@ -15,4 +19,8 @@ export class CreateUserDTO{
         minSymbols:0
     })
     password:string
+
+    @IsEnum(Perfil)
+    perfil:Perfil
+
 }
