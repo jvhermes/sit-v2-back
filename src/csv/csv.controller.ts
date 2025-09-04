@@ -14,7 +14,7 @@ export class CsvController {
     @Post()
     @UseInterceptors(
         FileInterceptor('file', {
-            storage: memoryStorage(), // NÃO salva no disco
+            storage: memoryStorage(), 
             fileFilter: (req, file, cb) => {
                 if (file.mimetype === 'text/csv') cb(null, true);
                 else cb(new Error('Apenas arquivos CSV são permitidos'), false);

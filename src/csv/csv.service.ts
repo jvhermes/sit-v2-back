@@ -1,17 +1,16 @@
 import { Injectable } from "@nestjs/common";
 import * as csv from 'csv-parser';
 import { PrismaService } from "src/prisma/prisma.service";
-import { Lote } from "@prisma/client";
 import * as streamifier from 'streamifier';
 
 @Injectable()
 export class CsvService {
 
-
     constructor(private prisma: PrismaService) { }
 
     async create(data: any[]) {
-        const result = await this.prisma.usuario.createMany({
+        await this.prisma.lote.deleteMany()
+        const result = await this.prisma.lote.createMany({
             data,
             skipDuplicates: true,
         });
@@ -36,12 +35,15 @@ export class CsvService {
         };
 
         return new Promise((resolve, reject) => {
+
             const readable = streamifier.createReadStream(buffer);
+
             let headerMap: Record<string, string> = {};
+
             readable
                 .pipe(csv())
                 .on('headers', (headers) => {
-                    // Mapeia os headers do CSV para os nomes desejados
+
                     for (const [nomePadrao, variacoes] of Object.entries(colunasMapeadas)) {
                         const encontrado = headers.find((h) =>
                             variacoes.includes(h.trim().toLowerCase().replace(/\s/g, '')),
@@ -49,6 +51,14 @@ export class CsvService {
                         if (encontrado) {
                             headerMap[encontrado] = nomePadrao;
                         }
+                    }
+
+                    const obrigatorias = [
+                        'codigo_imovel', 'numero', 'bairro', 'quadra', 'lote','area_total','testada','matricula','logradouro','insc_imob','proprietario'
+                    ];
+                    const faltando = obrigatorias.filter((col) => !Object.values(headerMap).includes(col));
+                    if (faltando.length > 0) {
+                        throw new Error(`CSV inválido. Colunas obrigatórias ausentes: ${faltando.join(', ')}`);
                     }
                 })
                 .on('data', (data) => {
@@ -65,16 +75,11 @@ export class CsvService {
                 .on('error', reject);
         });
     }
+
+
     async list() {
         return this.prisma.lote.findMany()
     }
 
-    async delete(id: string) {
 
-        return this.prisma.cartorio.delete({
-            where: {
-                id
-            }
-        })
-    }
 }

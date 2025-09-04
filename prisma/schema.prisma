@@ -68,12 +68,10 @@ model LoteVinculado {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  processo_cartorio_id   Int?
+  Processo_prefeitura    ProcessoPrefeitura? @relation(fields: [processo_prefeitura_id], references: [id])
   processo_prefeitura_id Int?
-  ProcessoPrefeitura     ProcessoPrefeitura? @relation(fields: [processoPrefeituraId], references: [id])
-  processoPrefeituraId   Int?
-  ProcessoCartorio       ProcessoCartorio?   @relation(fields: [processoCartorioId], references: [id])
-  processoCartorioId     Int?
+  Processo_cartorio      ProcessoCartorio?   @relation(fields: [processo_cartorio_id], references: [id])
+  processo_cartorio_id   Int?
 }
 
 model Atividade {
@@ -108,8 +106,8 @@ model Setor {
 }
 
 model Tipo {
-  id   Int            @id @default(autoincrement())
-  nome String         @unique
+  id   Int      @id @default(autoincrement())
+  nome String   @unique
   tipo TipoEnum
 
   processo_prefeitura ProcessoPrefeitura[]
@@ -210,12 +208,12 @@ model DescricaoLotes {
   area    String
   testada String
 
-  processo           ProcessoPrefeitura? @relation(fields: [processo_id], references: [id])
-  processo_cartorio  ProcessoCartorio?   @relation(fields: [processo_cartorio_id], references: [id])
-  descricao_resposta RespostaDescricao?
+  processo_prefeitura ProcessoPrefeitura? @relation(fields: [processo_prefeitura_id], references: [id])
+  processo_cartorio   ProcessoCartorio?   @relation(fields: [processo_cartorio_id], references: [id])
+  descricao_resposta  RespostaDescricao?
 
-  processo_id          Int?
-  processo_cartorio_id Int?
+  processo_prefeitura_id Int?
+  processo_cartorio_id   Int?
 
   @@map("descricao-p")
 }

@@ -8,8 +8,8 @@ export class AtividadeController{
     constructor(private readonly atividadeService:AtividadeService){}
 
     @Post()
-    async create(@Body() nome:string){
-        return this.atividadeService.create(nome)
+    async create(@Body() body:{ nome:string}){
+        return this.atividadeService.create(body.nome)
     }
 
     @Get()
@@ -18,7 +18,12 @@ export class AtividadeController{
     }
 
     @Put(':id')
-    async update(@Body() nome:string, @Param("id") id:string ){
-        return this.atividadeService.update(nome,id)
+    async update(@Body() body:{ nome:string}, @Param("id") id:string ){
+        return this.atividadeService.update(body.nome,id)
+    }
+
+    @Delete(':id')
+    async delete(@Param("id") id:string ){
+        return this.atividadeService.delete(id)
     }
 }

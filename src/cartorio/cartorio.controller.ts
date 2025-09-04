@@ -1,24 +1,29 @@
-import { Controller, Get,Post,Put,Delete,Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
 import { CartorioService } from './cartorio.service';
 
 
 @Controller('cartorio')
-export class CartorioController{
+export class CartorioController {
 
-    constructor(private readonly cartorioService:CartorioService){}
+    constructor(private readonly cartorioService: CartorioService) { }
 
     @Post()
-    async create(@Body() nome:string){
-        return this.cartorioService.create(nome)
+    async create(@Body() body: { nome: string }) {
+        return this.cartorioService.create(body.nome)
     }
 
     @Get()
-    async list(){
+    async list() {
         return this.cartorioService.list()
     }
 
     @Put(':id')
-    async update(@Body() nome:string, @Param("id") id:string ){
-        return this.cartorioService.update(nome,id)
+    async update(@Body() body: { nome: string }, @Param("id") id: string) {
+        return this.cartorioService.update(body.nome, id)
+    }
+
+    @Delete(':id')
+    async delete(@Param("id") id: string) {
+        return this.cartorioService.delete(id)
     }
 }
