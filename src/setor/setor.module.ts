@@ -10,4 +10,4 @@ import { PrismaModule } from "src/prisma/prisma.module";
     exports:[SetorService]
 })
 
-export class AtividadeModule{}
+export class SetorModule{}

@@ -10,4 +10,4 @@ import { PrismaModule } from "src/prisma/prisma.module";
     exports:[ProcessopService]
 })
 
-export class AtividadeModule{}
+export class ProcessoPModule{}

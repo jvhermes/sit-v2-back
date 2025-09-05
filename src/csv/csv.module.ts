@@ -10,4 +10,4 @@ import { PrismaModule } from "src/prisma/prisma.module";
     exports:[CsvService]
 })
 
-export class AtividadeModule{}
+export class CsvModule{}

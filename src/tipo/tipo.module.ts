@@ -10,4 +10,4 @@ import { PrismaModule } from "src/prisma/prisma.module";
     exports:[TipoService]
 })
 
-export class AtividadeModule{}
+export class TipoModule{}

@@ -1,10 +1,11 @@
 import { Controller, Body, Get, Post, Put, Delete, Param } from '@nestjs/common';
+import { CreateProcessopDTO } from './dto/processop-dto';
 
 @Controller('processop')
 export class ProcessopController {
     @Post()
-    async create(@Body() body: { nome: string }) {
-
+    async create(@Body() body: CreateProcessopDTO) {
+        
     }
 
     @Put(':id')
