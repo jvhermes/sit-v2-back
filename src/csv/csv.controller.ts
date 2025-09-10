@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, UploadedFile, UseInterceptors, } from '@ne
 import { CsvService } from './csv.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
-import * as csv from 'csv-parser';
 
 
 
@@ -27,10 +26,7 @@ export class CsvController {
         return { inserted: result.count };
     }
 
-    @Get()
-    async list() {
-        return this.csvService.list()
-    }
+
 
 
 }

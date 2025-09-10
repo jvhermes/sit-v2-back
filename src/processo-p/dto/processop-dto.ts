@@ -1,16 +1,34 @@
-import { IsString, IsDate, IsObject, IsOptional, IsArray, ValidateNested } from "class-validator";
+import { IsString, IsDate, IsOptional, IsArray, ValidateNested, IsNumber, IsEnum, IsBoolean } from "class-validator";
 import { Type } from 'class-transformer';
+import { Perfil, Status } from "@prisma/client";
+
 
 export class DescricaoLoteDTO {
     @IsString()
-
     lote: string
-    @IsString()
 
+    @IsString()
     area: string
-    @IsString()
 
+    @IsString()
     testada: string
+}
+
+export class DescricaoRespostaDTO {
+    @IsString()
+    matricula: string
+
+    @IsString()
+    data_registro: string
+
+    @IsString()
+    transcricao: string
+
+    @IsString()
+    lote: string
+
+    @IsString()
+    descricao_id: string
 }
 
 export class DescricaoPessoaDTO {
@@ -62,6 +80,77 @@ export class CreateProcessopDTO {
     descricao_pessoa?: DescricaoPessoaDTO[];
 
     @IsArray()
-    @IsString({ each: true }) 
+    @IsString({ each: true })
     lotes_id: string[];
+}
+
+export class CloseProcessopDTO {
+
+    @IsNumber()
+    id: number
+
+    @IsString()
+    conclusao: string
+
+}
+
+export class GetProcessoPDTO{
+
+    perfil:Perfil
+
+    @IsBoolean()
+    ativo:boolean
+
+    @IsString()
+    cartorio_id:string
+    
+    @IsString()
+    setor_id:string
+}
+
+
+export class RespondePessoaDTO {
+    @IsNumber()
+    processo_id: number
+
+    @IsDate()
+    data: Date
+
+
+    @IsString()
+    @IsOptional()
+    @ValidateNested({ each: true })
+    alvara: string
+
+    @IsString()
+    texto: string
+
+    processo_status: Status
+}
+
+export class RespondeLoteDTO {
+
+    @IsOptional()
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => DescricaoRespostaDTO)
+    descricao: DescricaoRespostaDTO[];
+
+    @IsString()
+    texto: string
+
+    @IsNumber()
+    processo_id: number
+
+    @IsDate()
+    data: Date
+
+
+    @IsString()
+    @IsOptional()
+    @ValidateNested({ each: true })
+    alvara: string
+
+    processo_status: Status
+
 }

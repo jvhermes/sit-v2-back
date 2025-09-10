@@ -45,8 +45,6 @@ model Lote {
   testada       String @default("")
   matricula     String @default("")
 
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
 
   @@map("lotes")
 }
@@ -64,9 +62,6 @@ model LoteVinculado {
   logradouro    String
   testada       String
   matricula     String
-
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
 
   Processo_prefeitura    ProcessoPrefeitura? @relation(fields: [processo_prefeitura_id], references: [id])
   processo_prefeitura_id Int?
@@ -210,7 +205,7 @@ model DescricaoLotes {
 
   processo_prefeitura ProcessoPrefeitura? @relation(fields: [processo_prefeitura_id], references: [id])
   processo_cartorio   ProcessoCartorio?   @relation(fields: [processo_cartorio_id], references: [id])
-  descricao_resposta  RespostaDescricao?
+  descricao_resposta  DescricaoResposta?
 
   processo_prefeitura_id Int?
   processo_cartorio_id   Int?
@@ -218,7 +213,7 @@ model DescricaoLotes {
   @@map("descricao-p")
 }
 
-model RespostaDescricao {
+model DescricaoResposta {
   id            String @id @default(uuid())
   matricula     String
   data_registro String
@@ -239,7 +234,7 @@ model Resposta {
   observacao String
   alvara     String @default("")
 
-  descricao RespostaDescricao[]
+  descricao DescricaoResposta[]
 
   processo    ProcessoPrefeitura @relation(fields: [processo_id], references: [id])
   processo_id Int                @unique

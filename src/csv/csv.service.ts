@@ -54,7 +54,7 @@ export class CsvService {
                     }
 
                     const obrigatorias = [
-                        'codigo_imovel', 'numero', 'bairro', 'quadra', 'lote','area_total','testada','matricula','logradouro','insc_imob','proprietario'
+                        'codigo_imovel', 'numero', 'bairro', 'quadra', 'lote', 'area_total', 'testada', 'matricula', 'logradouro', 'insc_imob', 'proprietario'
                     ];
                     const faltando = obrigatorias.filter((col) => !Object.values(headerMap).includes(col));
                     if (faltando.length > 0) {
@@ -77,9 +77,8 @@ export class CsvService {
     }
 
 
-    async list() {
-        return this.prisma.lote.findMany()
-    }
+
+
 
 
 }

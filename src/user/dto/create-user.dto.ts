@@ -1,26 +1,40 @@
-import { IsString,IsEmail,IsStrongPassword,IsEnum } from "class-validator";
+import { Perfil } from "@prisma/client";
+import { IsString, IsEmail, IsStrongPassword, IsEnum, IsOptional, ValidateNested, IsBoolean } from "class-validator";
 
-enum Perfil {ADMIN = "ADMIN",
-  PREFEITURA = "PREFEITURA",
-  CARTORIO = "CARTORIO"}
 
-export class CreateUserDTO{
-    @IsString()
-    name:string;
 
-    @IsEmail()
-    email:string
+export class CreateUserDTO {
+  @IsString()
+  nome: string;
 
-    @IsStrongPassword({
-        minLength:3,
-        minLowercase:0,
-        minUppercase:0,
-        minNumbers:0,
-        minSymbols:0
-    })
-    password:string
+  @IsEmail()
+  email: string
 
-    @IsEnum(Perfil)
-    perfil:Perfil
+  @IsStrongPassword({
+    minLength: 6,
+    minLowercase: 0,
+    minUppercase: 0,
+    minNumbers: 0,
+    minSymbols: 0
+  })
+  senha: string
 
+  @IsEnum(Perfil)
+  perfil: Perfil
+
+  @IsString()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  cartorio_id: string
+
+  @IsString()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  setor_id: string
+
+  @IsEmail()
+  avatar: string
+
+  @IsBoolean()
+  ativo: boolean
 }

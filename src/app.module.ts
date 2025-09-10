@@ -9,6 +9,9 @@ import { AtividadeModule } from './atividade/atividade.module';
 import { SetorModule } from './setor/setor.module';
 import { ProcessoPModule } from './processo-p/processop.module';
 import { CartorioModule } from './cartorio/cartorio.module';
+import { ProcessoCModule } from './processo-c/processoc.module';
+import { AuthModule } from './auth/auth.module';
+import { CsvModule } from './csv/csv.module';
 
 @Module({
   imports: [
@@ -19,7 +22,11 @@ import { CartorioModule } from './cartorio/cartorio.module';
     AtividadeModule,
     SetorModule,
     CartorioModule,
-    ProcessoPModule,],
+    ProcessoPModule,
+    ProcessoCModule,
+    AuthModule,
+    CsvModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
