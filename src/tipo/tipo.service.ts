@@ -1,4 +1,4 @@
-import { Injectable, ConflictException } from "@nestjs/common";
+import { Injectable, ConflictException, NotFoundException } from "@nestjs/common";
 
 import { PrismaService } from "src/prisma/prisma.service";
 
@@ -13,9 +13,9 @@ export class TipoService {
     async create(nome: string) {
         try {
             return await this.prisma.tipo.create({
-                data: { 
-                    nome ,
-                    tipo:"DESMEMBRAMENTO"
+                data: {
+                    nome,
+                    tipo: "DESMEMBRAMENTO"
                 },
             });
         } catch (error) {
@@ -42,6 +42,9 @@ export class TipoService {
             if (error.code === 'P2002') {
 
                 throw new ConflictException(`Já existe uma atividade com o nome "${nome}".`);
+            }
+            if (error.code === 'P2025') {
+                throw new NotFoundException(`Atividade com id "${id}" não encontrada.`);
             }
             throw error;
         }

@@ -7,5 +7,5 @@ export class AuthLoginDTO {
 
     @IsString()
     @MinLength(6)
-    password:string;
+    senha:string;
 }

@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt'
 import { Usuario } from '@prisma/client'
 import { PrismaService } from 'src/prisma/prisma.service'
 import * as bcrypt from 'bcrypt';
+import { AuthLoginDTO } from './dto/auth-login-dto';
 
 @Injectable()
 export class AuthService {
@@ -17,9 +18,9 @@ export class AuthService {
         return {
             acessToken: this.jwtService.sign({
                 nome: user.nome,
-                perfil:user.perfil,
-                cartorio_id:user.cartorio_id,
-                setor_id:user.setor_id
+                perfil: user.perfil,
+                cartorio_id: user.cartorio_id,
+                setor_id: user.setor_id
             }, {
                 expiresIn: "7 days",
                 subject: user.id,
@@ -42,7 +43,7 @@ export class AuthService {
         }
 
     }
-    async login(email: string, senha: string) {
+    async login({ email, senha }: AuthLoginDTO) {
 
         const user = await this.prisma.usuario.findUnique({ where: { email } });
         if (!user) throw new UnauthorizedException('Usuário não encontrado');

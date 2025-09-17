@@ -12,6 +12,7 @@ import { CartorioModule } from './cartorio/cartorio.module';
 import { ProcessoCModule } from './processo-c/processoc.module';
 import { AuthModule } from './auth/auth.module';
 import { CsvModule } from './csv/csv.module';
+import { DataModule } from './data/data.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { CsvModule } from './csv/csv.module';
     ProcessoPModule,
     ProcessoCModule,
     AuthModule,
-    CsvModule
+    CsvModule,
+    DataModule
   ],
   controllers: [AppController],
   providers: [AppService],

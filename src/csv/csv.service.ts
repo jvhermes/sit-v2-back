@@ -17,8 +17,16 @@ export class CsvService {
         return result;
     }
 
+
+
     async parseCsv(buffer: Buffer): Promise<any[]> {
         const rows: any[] = [];
+
+        let content = buffer.toString();
+        if (content.startsWith('"')) {
+            content = content.replace(/^"|"$/gm, '');
+        }
+        const cleanedBuffer = Buffer.from(content);
 
         const colunasMapeadas = {
             codigo_imovel: ['codigoimovel', 'bic'],
@@ -34,27 +42,32 @@ export class CsvService {
             matricula: ['matricula_numero'],
         };
 
+        const normalize = (str: string) => {
+            return str.trim().toLowerCase().replace(/[\s_]/g, '');
+        }
+
         return new Promise((resolve, reject) => {
 
-            const readable = streamifier.createReadStream(buffer);
+            const readable = streamifier.createReadStream(cleanedBuffer);
 
             let headerMap: Record<string, string> = {};
 
+
             readable
-                .pipe(csv())
+                .pipe(csv({ separator: ';' }))
                 .on('headers', (headers) => {
 
                     for (const [nomePadrao, variacoes] of Object.entries(colunasMapeadas)) {
                         const encontrado = headers.find((h) =>
-                            variacoes.includes(h.trim().toLowerCase().replace(/\s/g, '')),
+                            variacoes.includes(normalize(h)),
                         );
                         if (encontrado) {
-                            headerMap[encontrado] = nomePadrao;
+                            headerMap[normalize(encontrado)] = nomePadrao;
                         }
                     }
 
                     const obrigatorias = [
-                        'codigo_imovel', 'numero', 'bairro', 'quadra', 'lote', 'area_total', 'testada', 'matricula', 'logradouro', 'insc_imob', 'proprietario'
+                        'codigo_imovel', 'numero', 'bairro', 'quadra', 'lote', 'area_total', 'testada', 'logradouro', 'insc_imob', 'proprietario'
                     ];
                     const faltando = obrigatorias.filter((col) => !Object.values(headerMap).includes(col));
                     if (faltando.length > 0) {
@@ -64,7 +77,7 @@ export class CsvService {
                 .on('data', (data) => {
                     const linhaFiltrada: Record<string, any> = {};
                     for (const [colunaOriginal, valor] of Object.entries(data)) {
-                        const colunaAlvo = headerMap[colunaOriginal];
+                        const colunaAlvo = headerMap[normalize(colunaOriginal)];
                         if (colunaAlvo) {
                             linhaFiltrada[colunaAlvo] = valor;
                         }

@@ -22,4 +22,9 @@ export class DataController {
         return this.dataService.data_admin()
     }
 
+    @Post()
+    async seed(){
+        return this.dataService.seed()
+    }
+
 }

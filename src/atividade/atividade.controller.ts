@@ -19,7 +19,7 @@ export class AtividadeController{
 
     @Put(':id')
     async update(@Body() body:{ nome:string}, @Param("id") id:string ){
-        return this.atividadeService.update(body.nome,id)
+        return this.atividadeService.update(id,body.nome)
     }
 
     @Delete(':id')

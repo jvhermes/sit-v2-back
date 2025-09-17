@@ -19,7 +19,7 @@ export class CartorioController {
 
     @Put(':id')
     async update(@Body() body: { nome: string }, @Param("id") id: string) {
-        return this.cartorioService.update(body.nome, id)
+        return this.cartorioService.update(id,body.nome )
     }
 
     @Delete(':id')
