@@ -52,8 +52,8 @@ export class UserService {
                 perfil,
                 ativo,
                 avatar,
-                cartorio_id,
-                setor_id,
+                cartorio_id: cartorio_id || undefined,
+                setor_id: setor_id || undefined,
             }
         })
     }
@@ -89,16 +89,9 @@ export class UserService {
                 email: true,
                 avatar: true,
                 perfil: true,
-                cartorio: {
-                    select: {
-                        nome: true
-                    }
-                },
-                setor: {
-                    select: {
-                        nome: true
-                    }
-                }
+                cartorio: true,
+                setor:true,
+                ativo:true
             }
         })
     }

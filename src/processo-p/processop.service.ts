@@ -2,7 +2,6 @@ import { Injectable, ConflictException } from "@nestjs/common";
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { PrismaService } from "src/prisma/prisma.service";
 import {
-    CloseProcessopDTO,
     CreateProcessopDTO,
     DescricaoLoteDTO,
     DescricaoPessoaDTO,
@@ -256,12 +255,12 @@ export class ProcessopService {
             data: enrichedData
         })
     }
-    async createLoteVinculado(lotes_id: string[], processo_prefeitura_id: number) {
+    async createLoteVinculado(lotes_id: number[], processo_prefeitura_id: number) {
 
-        return lotes_id.map(async (item) => {
+        return lotes_id.map(async (id) => {
             const lote_res = await this.prisma.lote.findFirst({
                 where: {
-                    id: parseInt(item)
+                    id
                 }
             })
 

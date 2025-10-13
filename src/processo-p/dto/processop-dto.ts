@@ -80,8 +80,9 @@ export class CreateProcessopDTO {
     descricao_pessoa?: DescricaoPessoaDTO[];
 
     @IsArray()
-    @IsString({ each: true })
-    lotes_id: string[];
+    @IsNumber()
+    @ValidateNested({ each: true })
+    lotes_id: number[];
 }
 
 export class CloseProcessopDTO {

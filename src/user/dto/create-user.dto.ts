@@ -25,12 +25,12 @@ export class CreateUserDTO {
   @IsString()
   @IsOptional()
   @ValidateNested({ each: true })
-  cartorio_id: string
+  cartorio_id: string | undefined
 
   @IsString()
   @IsOptional()
   @ValidateNested({ each: true })
-  setor_id: string
+  setor_id: string | undefined
 
   @IsEmail()
   avatar: string

@@ -39,7 +39,7 @@ export class ProcessopController {
     @UseGuards(JwtAuthGuard)
     @Get()
     async get(@Req() req) {
-        const ativo = false
+        const ativo = true
         const perfil = req.user.perfil
         const setor_id = req.user.setor_id
         const cartorio_id = req.user.cartorio_id
