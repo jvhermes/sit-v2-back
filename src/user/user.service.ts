@@ -60,6 +60,7 @@ export class UserService {
 
     async update({ nome, email, perfil, ativo, avatar, cartorio_id, setor_id }: UpdateUserDTO, id: string) {
 
+
         return this.prisma.usuario.update({
             where: { id },
             data: {
@@ -68,8 +69,8 @@ export class UserService {
                 perfil,
                 ativo,
                 avatar,
-                cartorio_id,
-                setor_id,
+                cartorio_id: cartorio_id || undefined,
+                setor_id: setor_id || undefined,
             }
         })
 
@@ -90,8 +91,8 @@ export class UserService {
                 avatar: true,
                 perfil: true,
                 cartorio: true,
-                setor:true,
-                ativo:true
+                setor: true,
+                ativo: true
             }
         })
     }
